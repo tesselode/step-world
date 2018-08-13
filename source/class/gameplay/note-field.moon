@@ -9,20 +9,22 @@ class NoteField
 		for noteData in *@chartData.notes
 			table.insert @notes, Note noteData
 
+	initListeners: =>
+		@listeners = {
+			conversation\listen 'on beat', ->
+				@receptorAlpha = 1
+		}
+
 	new: (@songData, @chartData) =>
 		@initNotes!
-		@previousPosition = 0
-		@position = 0
 		@receptorAlpha = .5
-
-	setPosition: (position) =>
-		@previousPosition = @position
-		@position = position
-		if @previousPosition % 1 > @position % 1
-			@receptorAlpha = 1
+		@initListeners!
 
 	update: (dt) =>
 		@receptorAlpha += (.5 - @receptorAlpha) * 10 * dt
+
+	cleanup: =>
+		conversation\deafen listener for listener in *@listeners
 
 	drawReceptors: => with love.graphics
 		.push 'all'
@@ -31,12 +33,12 @@ class NoteField
 			.circle 'fill', i, 0, 1/4, 64
 		.pop!
 
-	draw: => with love.graphics
+	draw: (position) => with love.graphics
 		.push 'all'
 		.translate .getWidth! / 2, 64
 		.scale @scale
 		.translate -2.5, 0
 		@drawReceptors!
-		.translate 0, -@position * @baseSpacing
+		.translate 0, -position * @baseSpacing
 		note\draw @baseSpacing for note in *@notes
 		.pop!

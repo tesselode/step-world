@@ -1,3 +1,5 @@
+export conversation = require('lib.talk').new!
+
 Song = require 'class.gameplay.song'
 SongData = require 'class.data.song-data'
 

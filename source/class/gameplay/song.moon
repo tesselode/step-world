@@ -12,10 +12,7 @@ class Song
 		with @music = love.audio.newSource @songData.tags['MUSIC'], 'stream'
 			\play!
 
-	update: (dt) =>		
-		@previousTime = @time
-		@time = @music\tell!
-		musicDt = @time - @previousTime
+	updateScrolling: (musicDt) =>
 		@previousPosition = @position
 		if @stopTimer > 0
 			@stopTimer -= musicDt
@@ -31,9 +28,14 @@ class Song
 			with stop
 				if @previousPosition < .position and @position >= .position
 					@stopTimer = .length
-		with @noteField
-			\setPosition @position
-			\update dt
+
+	update: (dt) =>		
+		@previousTime = @time
+		@time = @music\tell!
+		musicDt = @time - @previousTime
+		@updateScrolling musicDt
+		conversation\say 'on beat' if @previousPosition % 1 > @position % 1
+		@noteField\update dt
 
 	draw: =>
-		@noteField\draw!
+		@noteField\draw @position
