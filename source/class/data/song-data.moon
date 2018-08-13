@@ -3,7 +3,13 @@ ChartData = require 'class.data.chart-data'
 class SongData
 	new: =>
 		@tags = {}
+		@bpmChanges = {}
 		@charts = {}
+
+	loadBpmChanges: =>
+		for bpmChange in @tags['BPMS']\gmatch '.-=.-,'
+			position, bpm = bpmChange\match '(.-)=(.-),'
+			table.insert @bpmChanges, {:position, :bpm}
 
 	load: (filename) =>
 		readingNotes = false
@@ -29,3 +35,4 @@ class SongData
 				if line\sub(1, 1) == '#'
 					tag, value = line\match '#(.*):(.*);'
 					@tags[tag] = value
+		@loadBpmChanges!
