@@ -7,7 +7,11 @@ class Song
 			\play!
 
 	update: (dt) =>
-		@noteField\update dt, @music\tell!, @music\isPlaying!
+		with @noteField
+			if @music\isPlaying!
+				\setPosition @songData\getSongPosition @music\tell!
+			\update dt
 
 	draw: =>
 		@noteField\draw!
+		love.graphics.print @songData\getBpm @music\tell!

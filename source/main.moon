@@ -2,7 +2,7 @@ Song = require 'class.gameplay.song'
 SongData = require 'class.data.song-data'
 
 songData = SongData!
-songData\load 'paranoia.sm'
+songData\load 'max 300.sm'
 song = Song songData, 'dance-single', 'Hard'
 
 love.update = (dt) ->

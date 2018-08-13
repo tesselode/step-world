@@ -11,18 +11,18 @@ class NoteField
 
 	new: (@songData, @chartData) =>
 		@initNotes!
-		@bpm = 180
-		@previousTime = 0
-		@previousScroll = 0
-		@scroll = 0
+		@previousPosition = 0
+		@position = 0
 		@receptorAlpha = .5
 
-	update: (dt, time, isPlaying) =>
-		@previousScroll = @scroll
-		@scroll = time * @bpm / 60 if isPlaying
-		@receptorAlpha += (.5 - @receptorAlpha) * 10 * dt
-		if @previousScroll % 1 > @scroll % 1
+	setPosition: (position) =>
+		@previousPosition = @position
+		@position = position
+		if @previousPosition % 1 > @position % 1
 			@receptorAlpha = 1
+
+	update: (dt) =>
+		@receptorAlpha += (.5 - @receptorAlpha) * 10 * dt
 
 	drawReceptors: => with love.graphics
 		.push 'all'
@@ -37,7 +37,6 @@ class NoteField
 		.scale @scale
 		.translate -2.5, 0
 		@drawReceptors!
-		.translate 0, -@scroll * @baseSpacing
+		.translate 0, -@position * @baseSpacing
 		note\draw @baseSpacing for note in *@notes
 		.pop!
-		.print @scroll
