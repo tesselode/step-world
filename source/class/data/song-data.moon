@@ -9,7 +9,17 @@ class SongData
 	loadBpmChanges: =>
 		for bpmChange in @tags['BPMS']\gmatch '.-=.-,'
 			position, bpm = bpmChange\match '(.-)=(.-),'
+			position = tonumber position
+			bpm = tonumber bpm
 			table.insert @bpmChanges, {:position, :bpm}
+		for i, bpmChange in ipairs @bpmChanges
+			if i == 1
+				assert bpmChange.position == 0
+				bpmChange.time = 0
+			else
+				positionDifference = bpmChange.position - @bpmChanges[i - 1].position
+				timeDifference = positionDifference / (@bpmChanges[i - 1].bpm / 60)
+				bpmChange.time = @bpmChanges[i - 1].time + timeDifference
 
 	load: (filename) =>
 		readingNotes = false
