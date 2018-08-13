@@ -15,20 +15,18 @@ class ChartData
 		table.insert @readLines, line
 
 	endMeasure: =>
-		heldNotes = {}
 		for lineNum, line in ipairs @readLines
 			time = @readMeasure * 4 + (lineNum - 1) * 4 / #@readLines
 			for column = 1, #line
 				noteType = line\sub column, column
 				if noteType == '3'
-					assert heldNotes[column]
-					heldNotes[column]\setEndTime time
-					heldNotes[column] = nil
+					@heldNotes[column]\setEndTime time
+					@heldNotes[column] = nil
 				elseif noteType ~= '0'
 					note = NoteData column, time, noteType
 					table.insert @notes, note
 					if noteType == '2' or noteType == '4'
-						heldNotes[column] = note
+						@heldNotes[column] = note
 		@readLines = {}
 		@readMeasure += 1
 
@@ -42,6 +40,7 @@ class ChartData
 		@notes = {}
 		@readMeasure = 0
 		@readLines = {}
+		@heldNotes = {}
 
 	drawDebug: =>
 		for note in *@notes
