@@ -1,20 +1,15 @@
+NoteField = require 'class.gameplay.note-field'
 SongData = require 'class.data.song-data'
 
-paranoia = SongData!
-paranoia\load 'paranoia.sm'
-
-scrollY = 0
+songData = SongData!
+songData\load 'paranoia.sm'
+noteField = NoteField songData.charts['dance-single']['Hard']
 
 love.update = (dt) ->
-	scrollY -= 100 * dt if love.keyboard.isDown 'up'
-	scrollY += 100 * dt if love.keyboard.isDown 'down'
+	noteField\update dt
 
 love.keypressed = (key) ->
 	love.event.quit! if key == 'escape'
 
-love.draw = -> with love.graphics
-	.push 'all'
-	.scale 2
-	.translate 0, -scrollY
-	paranoia.charts['dance-single']['Hard']\drawDebug!
-	.pop!
+love.draw = ->
+	noteField\draw!
