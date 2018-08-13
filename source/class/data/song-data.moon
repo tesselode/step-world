@@ -1,6 +1,6 @@
-Chart = require 'class.chart'
+ChartData = require 'class.data.chart-data'
 
-class
+class SongData
 	new: =>
 		@tags = {}
 		@charts = {}
@@ -11,7 +11,7 @@ class
 		for line in love.filesystem.lines filename
 			if line == '#NOTES:'
 				readingNotes = true
-				chart = Chart!
+				chart = ChartData!
 			elseif readingNotes
 				if line\sub(-1) == ':'
 					chart\addInfo line\match '%s*(.*):'

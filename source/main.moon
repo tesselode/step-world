@@ -1,6 +1,6 @@
-Song = require 'class.song'
+SongData = require 'class.data.song-data'
 
-paranoia = Song!
+paranoia = SongData!
 paranoia\load 'paranoia.sm'
 
 scrollY = 0

@@ -1,6 +1,6 @@
-Note = require 'class.note'
+NoteData = require 'class.data.note-data'
 
-class
+class ChartData
 	addInfo: (info) => with @info
 		if not .chartType
 			.chartType = info
@@ -25,7 +25,7 @@ class
 					heldNotes[column]\setEndTime time
 					heldNotes[column] = nil
 				elseif noteType ~= '0'
-					note = Note column, time, noteType
+					note = NoteData column, time, noteType
 					table.insert @notes, note
 					if noteType == '2' or noteType == '4'
 						heldNotes[column] = note
