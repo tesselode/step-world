@@ -1,7 +1,5 @@
 Note = require 'class.gameplay.note'
 
-music = love.audio.newSource 'paranoia.ogg', 'stream'
-
 class NoteField
 	scale: 32
 	baseSpacing: 2
@@ -11,19 +9,17 @@ class NoteField
 		for noteData in *@chartData.notes
 			table.insert @notes, Note noteData
 
-	new: (@chartData) =>
+	new: (@songData, @chartData) =>
 		@initNotes!
 		@bpm = 180
-		music\play!
 		@previousTime = 0
 		@previousScroll = 0
 		@scroll = 0
 		@receptorAlpha = .5
 
-	update: (dt) =>
+	update: (dt, time, isPlaying) =>
 		@previousScroll = @scroll
-		@scroll = music\tell! * @bpm / 60 if music\isPlaying!
-
+		@scroll = time * @bpm / 60 if isPlaying
 		@receptorAlpha += (.5 - @receptorAlpha) * 10 * dt
 		if @previousScroll % 1 > @scroll % 1
 			@receptorAlpha = 1
