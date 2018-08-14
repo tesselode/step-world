@@ -36,7 +36,7 @@ class SongData
 			if line == '#NOTES:'
 				section = 'notes'
 				@processTimingEvents!
-				chart = ChartData!
+				chart = ChartData @timingEvents
 			elseif section == 'tags'
 				if line\sub(1, 1) == '#'
 					tag, value = line\match '#(.*):(.*);'
@@ -47,11 +47,13 @@ class SongData
 				elseif line == ','
 					chart\endMeasure!
 				elseif line == ';'
-					chart\endMeasure!
-					chartType, difficulty = chart.info.chartType, chart.info.difficulty
-					@charts[chartType] = @charts[chartType] or {}
-					@charts[chartType][difficulty] = chart
-					section = 'none'
+					with chart
+						\endMeasure!
+						\finishLoading!
+						chartType, difficulty = .info.chartType, .info.difficulty
+						@charts[chartType] = @charts[chartType] or {}
+						@charts[chartType][difficulty] = chart
+						section = 'none'
 				else
 					chart\addLine line
 
