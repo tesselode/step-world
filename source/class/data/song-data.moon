@@ -34,8 +34,8 @@ class SongData
 		local chart
 		for line in love.filesystem.lines filename
 			if line == '#NOTES:'
+				@processTimingEvents! if section == 'tags'
 				section = 'notes'
-				@processTimingEvents!
 				chart = ChartData @timingEvents
 			elseif section == 'tags'
 				if line\sub(1, 1) == '#'
