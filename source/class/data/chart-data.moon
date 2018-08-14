@@ -41,9 +41,3 @@ class ChartData
 		@readMeasure = 0
 		@readLines = {}
 		@heldNotes = {}
-
-	drawDebug: =>
-		for note in *@notes
-			note\drawDebug!
-		for measureNum = 1, @readMeasure
-			love.graphics.line 0, measureNum * 32, 100, measureNum * 32 
