@@ -10,6 +10,7 @@ love.update = (dt) ->
 	song\update dt
 
 love.keypressed = (key) ->
+	song\keypressed key
 	love.event.quit! if key == 'escape'
 
 love.draw = ->

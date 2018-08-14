@@ -40,5 +40,14 @@ class Song
 		conversation\say 'on beat' if @previousPosition % 1 > @position % 1
 		@noteField\update dt
 
+	keypressed: (key) =>
+		keyColumn = key == 'left' and 1 or key == 'down' and 2 or key == 'up' and 3 or key == 'right' and 4
+		for note in *@noteField.notes
+			with note
+				if not .wasHit and keyColumn == .noteData.column and math.abs(@musicTime - .noteData.time) < 1/6
+					\hit!
+					break
+
 	draw: =>
 		@noteField\draw @position
+		love.graphics.print @musicTime
